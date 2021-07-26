@@ -21,30 +21,6 @@ No modules.
 |------|------|
 | [aws_instance.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 
-
-## Usage
-
-```
-module "ec2_cluster" {
-  source                 = "../modules/ec2"
-  version                = "~> 2.0"
-
-  name                   = "my-cluster"
-  instance_count         = 5
-
-  ami                    = "ami-ebd02392"
-  instance_type          = "t2.micro"
-  key_name               = "hello-key"
-  vpc_security_group_ids = ["sg-12345678"]
-  subnet_id              = "subnet-eddcdzz4"
-
-  tags = {
-    Environment = "dev"
-  }
-}
-```
-
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
