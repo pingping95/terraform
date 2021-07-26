@@ -116,7 +116,7 @@ resource "aws_route_table" "public_rt" {
   vpc_id = local.vpc_id
 
   tags = {
-    Name        = "${var.env}-public_rt"
+    Name = "${var.env}-public_rt"
     Environment = var.env
   }
 }
@@ -145,7 +145,7 @@ resource "aws_route_table" "private_rt" {
   }
 
   tags = {
-    Name        = "${var.env}-private_rt"
+    Name = "${var.env}-private_rt"
     Environment = var.env
   }
 }
@@ -155,10 +155,11 @@ resource "aws_route_table" "private_rt" {
 # DB Route Table
 #######################################################################################################################
 resource "aws_route_table" "database_rt" {
+  count = length(var.db_subnet_cidr) > 0 ? 1 : 0
   vpc_id = local.vpc_id
 
   tags = {
-    Name        = "${var.env}-database_rt"
+    Name = "${var.env}-database_rt"
     Environment = var.env
   }
 }
@@ -178,4 +179,12 @@ resource "aws_route_table_association" "private_rt_assoc" {
   subnet_id      = element(aws_subnet.my_private_subnets.*.id, count.index)
   route_table_id = element(
     aws_route_table.private_rt.*.id, count.index)
+}
+
+resource "aws_route_table_association" "db_rt_assoc" {
+  count          = length(var.db_subnet_cidr) > 0 ? length(var.db_subnet_cidr) : 0
+
+  subnet_id      = element(aws_subnet.db_subnets.*.id, count.index)
+  route_table_id = element(
+    aws_route_table.database_rt.*.id, count.index)
 }
