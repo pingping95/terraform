@@ -1,0 +1,51 @@
+#!/bin/bash
+
+
+# Template File
+# Var : ${BACKEND_LB}, ${BACKEND_PORT}, ${ROOT_DOMAIN}
+
+rm -rf /etc/nginx/conf.d/*.conf
+
+cat << EOF >/etc/nginx/conf.d/nginx_tomcat.conf
+
+  upstream tomcat {
+    ip_hash;
+    server ${BACKEND_LB}:${BACKEND_PORT};
+  }
+
+  server {
+    listen 80;
+    server_name www.${ROOT_DOMAIN} ${ROOT_DOMAIN};
+    access_log /var/log/nginx/access_log;
+
+    location / {
+      root /usr/share/nginx/html;
+      index index.html index.htm index.jsp;
+    }
+
+    # Static
+    location ~ \.(css|js|html|htm|swf|jpg|jpeg|git)$ {
+      root /usr/share/nginx/html;
+      index index.html index.htm;
+    }
+
+    # Dynamic files
+    location ~ \.(jsp|do)$ {
+      index index.jsp;
+      proxy_pass http://tomcat;
+      # proxy_set_header X-Real-IP $remote_addr;
+      # proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      # proxy_set_header X-NginX-Proxy true;
+      # proxy_set_header Host $http_host;
+      proxy_redirect off;
+      charset utf-8;
+    }
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+    root /usr/share/nginx/html;
+    }
+  }
+
+EOF
+
+sudo systemctl restart nginx

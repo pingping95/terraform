@@ -1,3 +1,9 @@
+// Cller Identity
+data "aws_caller_identity" "current" {
+
+}
+
+
 // Windows 2019
 data "aws_ami" "windows2019" {
   most_recent = true
@@ -60,5 +66,34 @@ data "aws_ami" "ubuntu-18_04" {
   filter {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+  }
+}
+
+// ACM Certificate
+data "aws_acm_certificate" "web" {
+  domain   = var.domain
+  statuses = ["ISSUED"]
+}
+
+// Route 53
+data "aws_route53_zone" "pingping2_shop" {
+  name = var.domain
+}
+
+// Get AMI Id from data - aws_ami_ids
+data "aws_ami" "web" {
+  owners = [data.aws_caller_identity.current.account_id]
+  filter {
+    name   = "name"
+    values = ["WEB-AMI-${var.web_ami_version}"] //v0.1, v0.2, ..
+  }
+}
+
+// Get AMI Id from data - aws_ami_ids
+data "aws_ami" "was" {
+  owners = [data.aws_caller_identity.current.account_id]
+  filter {
+    name   = "name"
+    values = ["WAS-AMI-${var.was_ami_version}"] //v0.1, v0.2, ..
   }
 }

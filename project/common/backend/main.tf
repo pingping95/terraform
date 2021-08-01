@@ -2,7 +2,7 @@
 resource "aws_s3_bucket" "tfstate" {
   bucket = "pingping95-tfstate-bucket"
   versioning {
-    enabled = false
+    enabled = var.s3_versioning
   }
 
   tags = {

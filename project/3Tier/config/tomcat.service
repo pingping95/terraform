@@ -1,0 +1,23 @@
+[Unit]
+Description=Apache Tomcat Web App Container
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+Environment="JAVA_HOME=/opt/java"
+Environment="JRE_HOME=/opt/java"
+Environment="INSTANCE_OWNER=tomcat"
+Environment="CATALINA_HOME=/opt/tomcat"
+Environment="CATALINA_BASE=/home/$INSTANCE_OWNER/was"
+Environment="CATALINA_PID=/home/$INSTANCE_OWNER/was/run/${INSTANCE_OWNER}.pid"
+
+ExecStart=/home/tomcat/was/bin/startup.sh
+ExecStop=/home/tomcat/was/bin/shutdown.sh
+
+User=tomcat
+Group=tomcat
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

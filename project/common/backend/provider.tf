@@ -14,7 +14,7 @@ terraform {
 
   backend "s3" {
     bucket = "pingping95-tfstate-bucket"
-    key    = "terraform/terraform.tfstate"
+    key    = "terraform/backend.tfstate"
     region = "ap-northeast-2"
   }
 }
