@@ -1,3 +1,6 @@
+#################################################################################
+// Default Settings
+#################################################################################
 variable "env" {
   default     = ""
   description = "Environment you would like to deploy. test, dev, stg, prod, and so on"
@@ -16,6 +19,10 @@ variable "region" {
   default     = ""
   description = "The primary AWS region where all the resources will be created"
 }
+
+#################################################################################
+// Network Settings
+#################################################################################
 
 variable "cidr_block" {
   default     = ""
@@ -43,16 +50,35 @@ variable "available_azs" {
   description = "AWS Available AZs you would like to deploy."
 }
 
-variable "instance_type" {
+
+#################################################################################
+// EC2 Settings
+#################################################################################
+
+variable "default_instance_type" {
   default     = ""
-  description = "EC2 Instance Type"
+  description = "Default EC2 Instance Type"
 }
 
 variable "key_pair" {
   default = ""
 }
 
-// Security Groups
+// Jenkins
+variable "jenkins_instance_type" {
+  default     = ""
+  description = "Jenkins EC2 Instance Type"
+}
+
+// Jenkins
+variable "jenkins_instance_profile" {
+  default     = ""
+  description = "Jenkins IAM Profile"
+}
+
+#################################################################################
+// Security Group Rules
+#################################################################################
 
 variable "source_bastion_cidrs" {
   description = "web source cidrs"
@@ -91,7 +117,9 @@ variable "source_was_cidrs" {
 }
 
 
+#################################################################################
 // WEB ALB
+#################################################################################
 variable "web_alb_enable_deletion_protection" {
   description = "WEB ALB Deletion Protection"
   type        = bool
@@ -110,24 +138,58 @@ variable "web_port" {
   default     = "80"
 }
 
+#################################################################################
 // WAS NLB
+#################################################################################
 variable "was_port" {
   description = "WAS NLB Listener port"
   type        = string
   default     = "8080"
 }
 
-// Launch Templates
+#################################################################################
+// Launch Template
+#################################################################################
+
+// Web
 variable "web_ami_version" {
-  description = "Web AMI Version. ex. v0.1, v0.2, .."
+  description = "Web AMI Version. ex. v1, v2, .."
   type        = string
-  default     = "v0.1"
+  default     = "v1"
 }
 
+variable "web_lt_default_version" {
+  description = "WEB Launch Template Default Version."
+  type        = number
+  default     = 1
+}
+
+variable "web_instance_type" {
+  default     = ""
+  description = "WEB EC2 Instance Type"
+}
+
+// Was
 variable "was_ami_version" {
-  description = "WAS AMI Version. ex. v0.1, v0.2, .."
+  description = "WAS AMI Version. ex. v1, v2, .."
   type        = string
-  default     = "v0.1"
+  default     = "v1"
+}
+
+variable "was_lt_default_version" {
+  description = "WAS Launch Template Default Version."
+  type        = number
+  default     = 1
+}
+
+variable "was_instance_type" {
+  default     = ""
+  description = "WAS EC2 Instance Type"
+}
+
+variable "was_instance_profile" {
+  default     = ""
+  description = "WAS EC2 IAM Instance Profile"
 }
 
 variable "disable_api_termination" {
@@ -136,7 +198,22 @@ variable "disable_api_termination" {
   default     = false
 }
 
-// Auto Scaling
+#################################################################################
+// Auto Scaling Group
+#################################################################################
+
+variable "web_asg_version" {
+  description = "Web ASG Launch Template Version. $Default, $Latest"
+  type        = string
+  default     = "$Default"
+}
+
+variable "was_asg_version" {
+  description = "WAS ASG Launch Template Version. $Default, $Latest"
+  type        = string
+  default     = "$Default"
+}
+
 variable "web_asg_capacity" {
   description = "WEB Autoscaling Capacity. Max, Min, Desired."
   type = object({
@@ -159,19 +236,72 @@ variable "was_asg_capacity" {
     desired = string
   })
   default = {
-    desired = "1"
-    max     = "2"
-    min     = "1"
+    desired = "2"
+    max     = "4"
+    min     = "2"
   }
 }
 
+// ASG Policy
+
+// 1. WEB
+variable "web_adjustment_type" {
+  description = "Specifies whether the adjustment is an absolute number or a percentage of the current capacity."
+  type        = string
+  default     = "ChangeInCapacity"
+}
+
+variable "web_cpu_scaleup_threshold" {
+  description = "Threshold value for WEB ASG Scale up"
+  type        = number
+  default     = 60
+}
+
+variable "web_cpu_scaledown_threshold" {
+  description = "Threshold value for WEB ASG Scale down"
+  type        = number
+  default     = 20
+}
+
+// 2. WAS
+variable "was_adjustment_type" {
+  description = "Specifies whether the adjustment is an absolute number or a percentage of the current capacity."
+  type        = string
+  default     = "ChangeInCapacity"
+}
+
+variable "was_cpu_scaleup_threshold" {
+  description = "Threshold value for WAS ASG Scale up"
+  type        = number
+  default     = 60
+}
+
+variable "was_cpu_scaledown_threshold" {
+  description = "Threshold value for WAS ASG Scale down"
+  type        = number
+  default     = 20
+}
+
+// SNS
+variable "asg_noti_endpoint" {
+  description = "Email List of ASG Scaling Event"
+  type        = string
+  default     = ""
+}
+
+
+#################################################################################
 // ACM
+#################################################################################
 variable "domain" {
   type        = string
   description = "Domain Name"
 }
 
+
+#################################################################################
 // Database
+#################################################################################
 
 // Option Group
 variable "db_engine_name" {

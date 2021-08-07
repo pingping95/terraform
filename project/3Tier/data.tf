@@ -69,6 +69,8 @@ data "aws_ami" "ubuntu-18_04" {
   }
 }
 
+// IAM Role
+
 // ACM Certificate
 data "aws_acm_certificate" "web" {
   domain   = var.domain
@@ -94,6 +96,6 @@ data "aws_ami" "was" {
   owners = [data.aws_caller_identity.current.account_id]
   filter {
     name   = "name"
-    values = ["WAS-AMI-${var.was_ami_version}"] //v0.1, v0.2, ..
+    values = ["test-WAS-AMI-${var.was_ami_version}"] //v0.1, v0.2, ..
   }
 }

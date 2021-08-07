@@ -18,7 +18,7 @@ variable "region" {
 }
 
 variable "s3_versioning" {
-    default = false
-    type = bool
-    description = "Enable S3 Versioning or not"
+  default     = false
+  type        = bool
+  description = "Enable S3 Versioning or not"
 }

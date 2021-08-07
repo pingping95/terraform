@@ -78,7 +78,7 @@ resource "aws_db_instance" "this" {
   allocated_storage = var.allocated_storage
   storage_encrypted = var.storage_encrypted
 
- skip_final_snapshot  = true
+  skip_final_snapshot  = true
 
   name                                = var.name
   username                            = var.username

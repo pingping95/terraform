@@ -51,7 +51,6 @@ resource "aws_security_group" "bastion_common" {
 }
 
 
-
 ############################################################################
 # Bastion EC2 Security Group Rules
 ############################################################################
@@ -141,4 +140,34 @@ resource "aws_security_group_rule" "was_cidrs" {
   from_port         = var.source_was_cidrs[count.index].from
   to_port           = var.source_was_cidrs[count.index].to
   protocol          = var.source_was_cidrs[count.index].protocol
+}
+
+############################################################################
+# Jenkins EC2 Security Group
+############################################################################
+resource "aws_security_group" "jenkins" {
+  name        = "${var.env}-jenkins_ec2-sg"
+  description = "Jenkins EC2 Security Group"
+  vpc_id      = module.main_vpc.vpc_id
+  tags = {
+    Name = "${var.env}-jenkins_ec2-sg"
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
