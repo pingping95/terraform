@@ -164,7 +164,9 @@ Terraform 3 Tier architecture & Packer AMI Automation
 - 학습 예정
 
 2. EKS Provisioning
+
 <br>
+
     - Infra Provision : Terraform
     - Configuration Management & Docker Image Build : Ansible & Packer
     - ALB Ingress Controller
