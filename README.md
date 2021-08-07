@@ -155,9 +155,9 @@ Terraform 3 Tier architecture & Packer AMI Automation
 - 진행 (별도 Blog에 업로드)
 
 1. Jenkins, Code Deploy를 활용한 CI/CD Pipeline
-<br>
-    - Maven 3.6.3
-    - War 파일 Build 후 S3에 Upload 후 CodeDeploy를 활용한 ASG Blue/Green
+
+- Maven 3.6.3
+- War 파일 Build 후 S3에 Upload 후 CodeDeploy를 활용한 ASG Blue/Green
 
 <br>
 
@@ -165,16 +165,14 @@ Terraform 3 Tier architecture & Packer AMI Automation
 
 2. EKS Provisioning
 
-<br>
-
-    - Infra Provision : Terraform
-    - Configuration Management & Docker Image Build : Ansible & Packer
-    - ALB Ingress Controller
-    - External DNS
-    - CNI
-    - Prometheus & Grafana (Monitoring)
-    - EFK, ELK (Logging)
-    - Pod IAM Management (Kube2iam, ..)
-    - Dashboard
-    - Cluster-Autoscaler
-    - CI/CD Pipeline
+- Infra Provision : Terraform
+- Configuration Management & Docker Image Build : Ansible & Packer
+- ALB Ingress Controller
+- External DNS
+- CNI
+- Prometheus & Grafana (Monitoring)
+- EFK, ELK (Logging)
+- Pod IAM Management (Kube2iam, ..)
+- Dashboard
+- Cluster-Autoscaler
+- CI/CD Pipeline
