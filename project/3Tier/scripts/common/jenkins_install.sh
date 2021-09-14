@@ -44,22 +44,17 @@ sudo service sshd restart
 
 sudo rm /etc/localtime
 sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
-date
 
-sudo yum install -y python3
-sudo python3 -m pip install --upgrade pip
-sudo python3 -m pip install awscli
 
-sudo yum install -y git
-sudo yum install -y java-1.8.0-openjdk-devel.x86_64
-rpm -qa java*jdk-devel
-javac -version
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
-sudo yum install -y jenkins
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+sudo yum upgrade
 
-sudo chkconfig jenkins on
+sudo yum -y install jenkins java-1.8.0-openjdk-devel.x86_64 git
 
-sudo service jenkins start
+sudo systemctl daemon-reload
 
-sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+    sudo systemctl enable jenkins

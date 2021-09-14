@@ -30,15 +30,33 @@ server {
   }
 
   # Dynamic files
-  location ~ \.(jsp|do)$ {
+  location ~ \.(jsp|do|svg|png)$ {
     index index.jsp;
     proxy_pass http://tomcat;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header Host \$http_host;
     charset utf-8;
-
   }
+
+  # Dynamic files
+  location tomcat.css {
+    proxy_pass http://tomcat;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header Host \$http_host;
+    charset utf-8;
+  }
+
+  # demo App
+  location /demo {
+    proxy_pass http://tomcat/demo;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header Host \$http_host;
+    charset utf-8;
+  }
+
   error_page 500 502 503 504 /50x.html;
   location = /50x.html {
   root /usr/share/nginx/html;

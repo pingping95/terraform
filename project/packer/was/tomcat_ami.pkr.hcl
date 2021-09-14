@@ -38,26 +38,14 @@ build {
 }
 
 # Variable Settings
-variable "profile" {
-    default = "default"
-}
+variable "profile" {}
 
-variable "region" {
-    default = "ap-northeast-2"
-}
+variable "region" {}
 
-variable "env" {
-    default = "test"
-}
+variable "env" {}
 
-variable "instance_type" {
-    default = "t2.micro"
-}
+variable "instance_type" {}
 
-variable "subnet_id" {
-    default = ""
-}
+variable "subnet_id" {}
 
-variable "version" {
-    default = ""
-}
+variable "version" {}

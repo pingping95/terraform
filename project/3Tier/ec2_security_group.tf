@@ -2,11 +2,11 @@
 # Bastion EC2 Security Group
 ############################################################################
 resource "aws_security_group" "bastion" {
-  name        = "${var.env}-public_ec2-sg"
+  name        = "${local.name_prefix}-public_ec2-sg"
   description = "Public EC2 Security Group"
   vpc_id      = module.main_vpc.vpc_id
   tags = {
-    Name = "${var.env}-public_ec2-sg"
+    Name = "${local.name_prefix}-public_ec2-sg"
   }
 
   egress {
@@ -25,11 +25,11 @@ resource "aws_security_group" "bastion" {
 # SSH Common Security Group
 ############################################################################
 resource "aws_security_group" "bastion_common" {
-  name        = "${var.env}-common-ssh"
+  name        = "${local.name_prefix}-common-ssh"
   description = "Allow SSH Inbound from bastion"
   vpc_id      = module.main_vpc.vpc_id
   tags = {
-    Name = "${var.env}-bastion_common"
+    Name = "${local.name_prefix}-bastion_common"
   }
 
   ingress {
@@ -70,11 +70,12 @@ resource "aws_security_group_rule" "bastion_cidrs" {
 # WEB EC2 Security Group
 ############################################################################
 resource "aws_security_group" "web" {
-  name        = "${var.env}-web-sg"
+  name        = "${local.name_prefix}-web-sg"
   description = "Public EC2 Security Group"
   vpc_id      = module.main_vpc.vpc_id
   tags = {
-    Name = "${var.env}-web-sg"
+    Name        = "${local.name_prefix}-web-sg"
+    Environment = var.tags.Environment
   }
 
   egress {
@@ -108,11 +109,12 @@ resource "aws_security_group_rule" "web_cidrs" {
 # WAS EC2 Security Group
 ############################################################################
 resource "aws_security_group" "was" {
-  name        = "${var.env}-was-sg"
+  name        = "${local.name_prefix}-was-sg"
   description = "WAS EC2 Security Group"
   vpc_id      = module.main_vpc.vpc_id
   tags = {
-    Name = "${var.env}-was-sg"
+    Name        = "${local.name_prefix}-was-sg"
+    Environment = var.tags.Environment
   }
 
   egress {
@@ -146,11 +148,12 @@ resource "aws_security_group_rule" "was_cidrs" {
 # Jenkins EC2 Security Group
 ############################################################################
 resource "aws_security_group" "jenkins" {
-  name        = "${var.env}-jenkins_ec2-sg"
+  name        = "${local.name_prefix}-jenkins_ec2-sg"
   description = "Jenkins EC2 Security Group"
   vpc_id      = module.main_vpc.vpc_id
   tags = {
-    Name = "${var.env}-jenkins_ec2-sg"
+    Name        = "${local.name_prefix}-jenkins-sg"
+    Environment = var.tags.Environment
   }
 
   ingress {

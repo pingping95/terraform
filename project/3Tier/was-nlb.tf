@@ -2,14 +2,15 @@
 # WAS NLB
 ############################################################################
 resource "aws_lb" "was" {
-  name                             = "${var.env}-was-nlb"
+  name                             = "${local.name_prefix}-was-nlb"
   internal                         = true # Internal Only
   load_balancer_type               = "network"
   subnets                          = module.main_vpc.private_subnets_ids
   enable_deletion_protection       = false
   enable_cross_zone_load_balancing = true
   tags = {
-    Env = var.env
+    Name        = "${local.name_prefix}-was-nlb"
+    Environment = var.tags.Environment
   }
 }
 ############################################################################
@@ -28,7 +29,7 @@ resource "aws_lb_listener" "was_https" {
 # WAS NLB Target Group
 ############################################################################
 resource "aws_lb_target_group" "was_http" {
-  name     = "${var.env}-was-tg"
+  name     = "${local.name_prefix}-was-tg"
   port     = var.was_port
   protocol = "TCP"
   vpc_id   = module.main_vpc.vpc_id

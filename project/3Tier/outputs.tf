@@ -15,7 +15,7 @@ output "ami_ids" {
     value = data.aws_ami_ids.ami
 } */
 output "bastion_public_ip" {
-  value = module.bastion2.public_ip
+  value = module.bastion.public_ip
 }
 output "jenkins_public_ip" {
   value = module.jenkins_ec2.public_ip

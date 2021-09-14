@@ -134,9 +134,12 @@ Terraform 3 Tier architecture & Packer AMI Automation
     - Launch Template
     - RDS (MySQL)
 
+
+
 ## 개선점
 
 - Module화 (postgresql, asg, asg_policy, load balancer, IAM, ..)
+- Launch Template에서 Version 적지 X => 자체 Versioning이 되며, default로 어떤 버전을 선택할지만 정하면 된다.
 - 반복적인 소스 코드 줄이기 (for, count, for_each, ..)
 - name_prefix 활용하기 (var.service_name + var.env + var.region)
 - 동적으로 인프라 생성 => count에서 ? : 로 if문 활용

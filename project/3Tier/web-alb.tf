@@ -20,7 +20,7 @@ resource "aws_route53_record" "web_alb" {
 # WEB ALB - Security Group
 ############################################################################
 resource "aws_security_group" "web_alb" {
-  name        = "${var.env}-web-alb-sg"
+  name        = "${local.name_prefix}-web-alb-sg"
   description = "Web ALB Security Group"
   vpc_id      = module.main_vpc.vpc_id
   # Outbound
@@ -46,21 +46,23 @@ resource "aws_security_group" "web_alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    Name = "${var.env}-web-alb-sg"
+    Name        = "${local.name_prefix}-web-alb-sg"
+    Environment = var.tags.Environment
   }
 }
 ############################################################################
 # WEB ALB
 ############################################################################
 resource "aws_lb" "web" {
-  name                       = "${var.env}-${var.web_lb_name}"
+  name                       = "${local.name_prefix}-${var.web_lb_name}"
   internal                   = false # Internet Facing
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.web_alb.id]
   subnets                    = module.main_vpc.public_subnets_ids
   enable_deletion_protection = var.web_alb_enable_deletion_protection
   tags = {
-    Env = var.env
+    Name        = "${local.name_prefix}-web-alb"
+    Environment = var.tags.Environment
   }
 }
 ############################################################################
@@ -97,7 +99,7 @@ resource "aws_lb_listener" "web_https_redirect" {
 # WEB ALB Target Group
 ############################################################################
 resource "aws_lb_target_group" "web_http" {
-  name     = "${var.env}-web-tg"
+  name     = "${local.name_prefix}-web-tg"
   vpc_id   = module.main_vpc.vpc_id
   port     = var.web_port
   protocol = "HTTP"

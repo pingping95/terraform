@@ -1,10 +1,10 @@
 #################################################################################
 // Default Settings
 #################################################################################
-variable "env" {
-  default     = ""
-  description = "Environment you would like to deploy. test, dev, stg, prod, and so on"
-}
+# variable "env" {
+#   default     = ""
+#   description = "Environment you would like to deploy. test, dev, stg, prod, and so on"
+# }
 
 variable "profile_name" {
   default     = ""
@@ -18,6 +18,16 @@ variable "cred_file" {
 variable "region" {
   default     = ""
   description = "The primary AWS region where all the resources will be created"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Default tags"
+  default = {
+    "Service"     = "ping2"
+    "Environment" = "test"
+    "RegionAlias" = "apne2"
+  }
 }
 
 #################################################################################

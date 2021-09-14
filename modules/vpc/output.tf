@@ -54,7 +54,7 @@ output "private_subnets_cidr_blocks" {
 
 // 3. Database Subnet
 output "db_subnets_ids" {
-  value = aws_subnet.db_subnets.*.id
+  value       = aws_subnet.db_subnets.*.id
   description = "Output details of my Database subnets"
 }
 

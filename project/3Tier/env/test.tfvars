@@ -1,6 +1,3 @@
-# Environment
-env = "test"
-
 # Profile, Region Name
 profile_name = "default"
 cred_file    = "~/.aws/credentials"
@@ -14,7 +11,7 @@ db_subnet_cidr      = ["10.0.20.0/24", "10.0.21.0/24"]
 available_azs       = ["ap-northeast-2a", "ap-northeast-2c"]
 
 # EC2 Configurations
-default_instance_type = "t2.micro"
+default_instance_type = "t3.small"
 key_pair      = "pingping95-key"
 
 jenkins_instance_type = "t3.small"
@@ -57,7 +54,7 @@ web_instance_type = "t2.small"
 was_instance_type = "t2.small"
 
 web_ami_version = "v0.1"
-was_ami_version = "v0.1"
+was_ami_version = "v0.2"
 
 web_lt_default_version = 1
 was_lt_default_version = 1
@@ -92,7 +89,7 @@ was_cpu_scaledown_threshold = 20
 was_instance_profile = "CodeDeployRoleProfile"
 
 // SNS
-asg_noti_endpoint = "taehun.kim@bespinglobal.com"
+asg_noti_endpoint = "xogns556@naver.com"
 
 // Route 53, ALB, ACM
 domain = "pingping2.shop"

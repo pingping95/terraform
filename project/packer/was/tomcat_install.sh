@@ -2,8 +2,9 @@
 
 sleep 30
 
-TOMCAT_DOWNLOAD_URL="https://mirror.navercorp.com/apache/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50.tar.gz"
-
+TOMCAT_DOWNLOAD_URL="https://mirror.navercorp.com/apache/tomcat/tomcat-9/v9.0.52/bin/apache-tomcat-9.0.52.tar.gz"
+TOMCAT_TAR_GZ=$(echo "${TOMCAT_DOWNLOAD_URL}" | awk -F / '{print $9}')  # apache-tomcat-9.0.52.tar.gz
+TOMCAT_NO_TAR=$(echo "${TOMCAT_TAR_GZ}" | awk -F . '{print $1"."$2"."$3}') # apache-tomcat-9.0.52
 
 # update Package Manager
 sudo yum -y update
@@ -12,7 +13,7 @@ sudo yum -y install wget
 
 # 생성할 user의 id와 pw 기입
 id='user'
-pw='passw0rd'
+pw='passw0rd1!'
 
 # User 생성
 # User 없을 시 아래 if문을 실행하지 않음
@@ -33,23 +34,27 @@ sudo service sshd restart
 
 # 1. Install Openjdk (Zulu)
 
-# Get Zulu-repo
-sudo yum install -y https://cdn.azul.com/zulu/bin/zulu-repo-1.0.0-1.noarch.rpm
+# # Get Zulu-repo
+# sudo yum install -y https://cdn.azul.com/zulu/bin/zulu-repo-1.0.0-1.noarch.rpm
 
-# Install zulu from yum repository
-sudo yum -y install zulu11-jdk
+# # Install zulu from yum repository
+# sudo yum -y install zulu11-jdk
+
+# OpenJDK 1.8 Download
+sudo yum -y install java-1.8.0-openjdk-headless.x86_64
 
 # Set up Environment variable to /etc/profile
+TEMP_JAVA_HOME=$(readlink -f /usr/bin/java | awk -F'/bin' '{print $1}')
 
 sudo bash -c 'cat >> /etc/profile' << EOF
 # 1. Java Home
-JAVA_HOME=/usr/lib/jvm/zulu11
+JAVA_HOME=$TEMP_JAVA_HOME
 
 # 2. Catalina Home
-CATALINA_HOME=/usr/local/tomcat
+CATALINA_HOME=/opt/tomcat
 
 # 3. Binary
-PATH=$PATH:/usr/lib/jvm/zulu11/bin
+PATH=$PATH:$JAVA_HOME/bin
 
 export JAVA_HOME CATALINA_HOME PATH
 EOF
@@ -64,11 +69,11 @@ sudo useradd -g tomcat tomcat
 # Download Tomcat and Install
 cd /usr/local/src
 sudo wget $TOMCAT_DOWNLOAD_URL
-sudo tar -zxvf apache-tomcat-9.0.50.tar.gz
-sudo mv apache-tomcat-9.0.50/ /usr/local/tomcat/
+sudo tar -zxvf $TOMCAT_TAR_GZ
+sudo mv $TOMCAT_NO_TAR /opt/tomcat
 
 # Change Permissions
-cd /usr/local
+cd /opt
 sudo chmod -R 755 tomcat
 sudo chown -R tomcat:tomcat tomcat
 
@@ -83,8 +88,8 @@ After=syslog.target network.target
 Type=forking
 User=tomcat
 Group=tomcat
-ExecStart=/usr/local/tomcat/bin/startup.sh
-ExecStop=/usr/local/tomcat/bin/shutdown.sh
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
 # SuccessExitStatus=143
 Restart=always
 RestartSec=10
