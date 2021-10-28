@@ -17,6 +17,6 @@ output "ami_ids" {
 output "bastion_public_ip" {
   value = module.bastion.public_ip
 }
-output "jenkins_public_ip" {
-  value = module.jenkins_ec2.public_ip
-}
+# output "jenkins_public_ip" {
+#   value = module.jenkins_ec2.public_ip
+# }
