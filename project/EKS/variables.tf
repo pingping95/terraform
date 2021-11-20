@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // Global
 variable "profile_name" {
   default     = "sre5_taehun"
@@ -12,6 +13,16 @@ variable "region" {
   default     = "ap-northeast-2"
   description = "The primary AWS region where all the resources will be created"
 }
+=======
+## Common variables
+variable "profile_name" { default = "sre5_taehun" }
+
+variable "cred_file" { default = "/home/user/.aws/credentials" }
+
+variable "region" { default = "ap-northeast-2" }
+
+variable "owner_tag" { default = "taehun.kim" }
+>>>>>>> Stashed changes
 
 #################################################################
 # VPC Configuration
@@ -74,6 +85,8 @@ variable "default_instance_type" {
 variable "key_pair" {
   default = ""
 }
+
+variable "create_bastion" { default = false }
 
 #################################################################
 # Security Groups

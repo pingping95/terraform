@@ -4,12 +4,7 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 data "aws_partition" "current" {}
 
-# data "tls_certificate" "cluster" {
-#   count = var.create_cluster ? 1 : 0
-#   url = aws_eks_cluster.cluster[0].identity.0.oidc.0.issuer
-# }
-
-// AMI
+# AMI
 // 1. Amazon Linux 2
 data "aws_ami" "amazon2" {
   most_recent = true
