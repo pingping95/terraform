@@ -1,7 +1,7 @@
 # This is Symbolic Link file.
 # Managed at ../common/variables/global_vars.tf file.
 variable "profile_name" {
-  default     = "default"
+  default     = "sre5_taehun"
   description = "pick a profile name at ~/.aws/credentials"
 }
 

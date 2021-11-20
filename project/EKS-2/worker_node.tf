@@ -3,7 +3,7 @@ resource "aws_eks_node_group" "worker" {
   cluster_name    = aws_eks_cluster.cluster.name
   node_group_name = "${local.name_prefix}-worker-node"
   node_role_arn   = aws_iam_role.worker.arn
-  subnet_ids      = module.main_vpc.private_subnets_ids
+  subnet_ids      = module.main_vpc.private_subnets_ids // Network Configuration
 
   // Worker Settings
   instance_types = var.worker_instance_types
@@ -23,7 +23,7 @@ resource "aws_eks_node_group" "worker" {
   tags = {
     Name        = "${local.name_prefix}-worker-node"
     Environment = "${var.tags.Environment}"
-    Owner = var.owner_tag
+    Owner       = var.owner_tag
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.

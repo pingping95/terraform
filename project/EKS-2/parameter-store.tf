@@ -5,6 +5,6 @@ resource "aws_ssm_parameter" "newrelic_key" {
 
   tags = {
     Environment = "${var.tags["Environment"]}"
-    Owner = var.owner_tag
+    Owner       = var.owner_tag
   }
 }

@@ -14,7 +14,7 @@ resource "aws_eks_cluster" "cluster" {
   tags = {
     Name        = "${local.name_prefix}-cluster"
     Environment = var.tags.Environment
-    Owner = var.owner_tag
+    Owner       = var.owner_tag
   }
 
   depends_on = [
@@ -25,6 +25,7 @@ resource "aws_eks_cluster" "cluster" {
   ]
 }
 
+
 resource "aws_cloudwatch_log_group" "cluster" {
   name              = "/aws/eks/${local.name_prefix}/cluster"
   retention_in_days = 7
@@ -32,7 +33,7 @@ resource "aws_cloudwatch_log_group" "cluster" {
   tags = {
     Name        = "${local.name_prefix}-cluster"
     Environment = var.tags.Environment
-    Owner = var.owner_tag
+    Owner       = var.owner_tag
   }
 }
 

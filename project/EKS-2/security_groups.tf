@@ -2,7 +2,7 @@
 resource "aws_security_group" "common_ssh" {
   name        = "${local.name_prefix}-common_ssh"
   description = "Allow SSH Inbound from bastion"
-  vpc_id      = module.main_vpc.vpc_id
+  vpc_id      = module.main_vpc.vpc_id // Network Configuration
   tags = {
     Name = "${local.name_prefix}-common_ssh"
   }
@@ -28,7 +28,7 @@ resource "aws_security_group" "common_ssh" {
 resource "aws_security_group" "bastion" {
   name        = "${local.name_prefix}-bastion-sg"
   description = "Public EC2 Security Group"
-  vpc_id      = module.main_vpc.vpc_id
+  vpc_id      = module.main_vpc.vpc_id // Network Configuration
   tags = {
     Name = "${local.name_prefix}-bastion-sg"
   }
@@ -56,19 +56,13 @@ resource "aws_security_group_rule" "bastion_cidrs" {
   protocol    = "tcp"
   cidr_blocks = ["0.0.0.0/0"]
   description = "SSH Inbound"
-
-  # from_port   = var.bastion_ingress_rules[count.index][0]
-  # to_port     = var.bastion_ingress_rules[count.index][1]
-  # protocol    = var.bastion_ingress_rules[count.index][2]
-  # cidr_blocks = var.bastion_ingress_rules[count.index][3]
-  # description = var.bastion_ingress_rules[count.index][4]
 }
 
 // 3. VPC Endpoint SG
 resource "aws_security_group" "vpc_endpoint" {
   name        = "${local.name_prefix}-vpc-endpoint-sg"
   description = "Security Group used by VPC Endpoints."
-  vpc_id      = module.main_vpc.vpc_id
+  vpc_id      = module.main_vpc.vpc_id // Network Configuration
 
   tags = {
     "Name" = "${local.name_prefix}-vpc-endpoint-sg"
@@ -111,7 +105,7 @@ resource "aws_security_group_rule" "vpc_endpoint_self_ingress" {
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "${local.name_prefix}-cluster-sg"
   description = "Cluster communication with worker nodes"
-  vpc_id      = module.main_vpc.vpc_id
+  vpc_id      = module.main_vpc.vpc_id // Network Configuration
 
   tags = {
     Name = "${local.name_prefix}-cluster-sg"
@@ -166,7 +160,7 @@ resource "aws_security_group_rule" "cluster_outbound" {
 resource "aws_security_group" "eks_worker_sg" {
   name        = "${local.name_prefix}-worker-node-sg"
   description = "Security group for all nodes in the cluster"
-  vpc_id      = module.main_vpc.vpc_id
+  vpc_id      = module.main_vpc.vpc_id // Network Configuration
 
   egress {
     from_port   = 0
@@ -204,6 +198,39 @@ resource "aws_security_group_rule" "nodes_inbound" {
   protocol                 = "tcp"
   security_group_id        = aws_security_group.eks_worker_sg.id
   source_security_group_id = aws_security_group.eks_cluster_sg.id
+
+  depends_on = [
+    aws_security_group.eks_worker_sg
+  ]
+}
+
+// [Rule] EFS File System
+resource "aws_security_group" "efs" {
+  name        = "${local.name_prefix}-efs-sg"
+  description = "Security group for EFS File system"
+  vpc_id      = module.main_vpc.vpc_id // Network Configuration
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${local.name_prefix}-efs-sg"
+  }
+}
+
+// [Rule] EFS File system - Ingress
+resource "aws_security_group_rule" "efs" {
+  description       = "Allow from client to EFS File system"
+  type              = "ingress"
+  from_port         = 2049
+  to_port           = 2049
+  protocol          = "tcp"
+  security_group_id = aws_security_group.efs.id
+  cidr_blocks       = [module.main_vpc.vic_cidr_block]
 
   depends_on = [
     aws_security_group.eks_worker_sg

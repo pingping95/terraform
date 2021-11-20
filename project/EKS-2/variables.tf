@@ -1,17 +1,9 @@
 // Global
-variable "profile_name" {
-  default     = "sre5_taehun"
-  description = "pick a profile name at ~/.aws/credentials"
-}
+variable "profile_name" { default = "sre5_taehun" }
 
-variable "cred_file" {
-  default = "~/.aws/credentials"
-}
+variable "cred_file" { default = "/home/user/.aws/credentials" }
 
-variable "region" {
-  default     = "ap-northeast-2"
-  description = "The primary AWS region where all the resources will be created"
-}
+variable "region" { default = "ap-northeast-2" }
 
 #################################################################
 # VPC Configuration
@@ -89,6 +81,7 @@ variable "eks_enabled_log_types" {
   type    = list(string)
   default = []
 }
+
 variable "eks_version" {}
 
 // Worker Node
@@ -124,7 +117,13 @@ variable "tags" {
 }
 
 variable "owner_tag" {
-  type = string
+  type        = string
   description = "Owner tag for resource pricing management, e.g taehun.kim"
-  default = "taehun.kim"
+  default     = "taehun.kim"
+}
+
+
+// EFS File System
+variable "efs" {
+  default = {}
 }
