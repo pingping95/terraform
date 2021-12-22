@@ -1,7 +1,7 @@
 provider "aws" {
-  region                  = var.region
-  shared_credentials_file = var.cred_file
-  profile                 = var.profile_name
+  region                  = var.config.region
+  shared_credentials_file = var.config.cred_file
+  profile                 = var.config.profile_name
 }
 
 terraform {
@@ -14,17 +14,17 @@ terraform {
 
   backend "s3" {
     bucket                  = "taehun-test-an2-tfstate"
-    key                     = "an2/common/test.tfstate"
+    key                     = "an2/cf_test/test.tfstate"
     region                  = "ap-northeast-2"
     profile                 = "sre5_taehun"
     shared_credentials_file = "~/.aws/credendials"
   }
 }
 
-## Virginia Region
+
 provider "aws" {
-  region                  = "us-east-1"
-  shared_credentials_file = var.cred_file
-  profile                 = var.profile_name
   alias                   = "virginia"
+  region                  = "us-east-1"
+  shared_credentials_file = var.config.cred_file
+  profile                 = var.config.profile_name
 }
