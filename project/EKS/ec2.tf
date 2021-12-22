@@ -2,7 +2,7 @@
 module "bastion" {
   source         = "../../modules/ec2"
   name           = "${local.name_prefix}-bastion"
-  instance_count = 1
+  instance_count = var.create_bastion ? 1 : 0
 
   ami                    = data.aws_ami.amazon2.id
   instance_type          = var.default_instance_type

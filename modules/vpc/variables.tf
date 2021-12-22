@@ -10,6 +10,11 @@ variable "region" {
   type        = string
 }
 
+# variable "profile_name" { }
+
+# variable "cred_file" { }
+
+
 variable "vpc_tags" {
   description = "Additional Tags for VPC"
   type        = map(string)

@@ -6,7 +6,7 @@ variable "profile_name" {
 }
 
 variable "cred_file" {
-  default = "~/.aws/credentials"
+  default = "/home/user/.aws/credentials"
 }
 
 variable "region" {

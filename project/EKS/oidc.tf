@@ -6,5 +6,6 @@ resource "aws_iam_openid_connect_provider" "cluster" {
 
   tags = {
     Name = "${local.name_prefix}-cluster-oidc"
+    Owner = var.owner_tag
   }
 }

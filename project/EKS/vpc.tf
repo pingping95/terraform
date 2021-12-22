@@ -10,17 +10,19 @@ module "main_vpc" {
   // Tags
   vpc_tags = {
     "kubernetes.io/cluster/${local.cluster}" = "shared"
+    Owner = var.owner_tag
   }
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb"        = "1",
     "kubernetes.io/cluster/${local.cluster}" = "shared"
-
+    Owner = var.owner_tag
   }
 
   public_subnet_tags = {
     "kubernetes.io/role/elb"                 = "1",
     "kubernetes.io/cluster/${local.cluster}" = "shared"
+    Owner = var.owner_tag
   }
   // Options
   define_eip           = true
@@ -43,6 +45,7 @@ resource "aws_vpc_endpoint" "s3" {
   tags = {
     Name        = "${local.name_prefix}-s3-endpoint"
     Environment = var.tags.Environment
+    Owner = var.owner_tag
   }
 }
 
@@ -58,6 +61,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   tags = {
     Name        = "${local.name_prefix}-ecr-endpoint"
     Environment = var.tags.Environment
+    Owner = var.owner_tag
   }
 }
 
