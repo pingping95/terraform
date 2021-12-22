@@ -11,9 +11,8 @@
 **/terraform.tfstate
 **/terraform.tfstate.*
 
-
 # .vscode
-.vscode
+.vscode/*
 
 # demo_app
 **/target/*
